@@ -92,6 +92,7 @@ jobs:
       run: |
         echo ${{ job.terraform.environment }}
         echo ${{ steps.plan.outputs.json_plan_path }}
+        echo ${{ github.ref }}
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
