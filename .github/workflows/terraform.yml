@@ -89,7 +89,9 @@ jobs:
       run: terraform plan -input=false
 
     - name: Parameters
-      run: echo "${{ job.terraform.environment }}"
+      run: |
+        echo "${{ job.terraform.environment }}"
+        echo "${{ steps.plan.outputs.json_plan_path }}"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
