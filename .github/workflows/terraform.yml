@@ -87,10 +87,14 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -input=false
 
-    - name: Get variables
-      run: |
-        echo "$GITHUB_REF"
-        echo "$GITHUB_EVENT_NAME"
+    - name: Parameters
+      run: echo "{{ job.terraform.environment }}"
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        # Artifact name
+        name: ${{ job.terraform.environment }}${{ github.run_number }}
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
