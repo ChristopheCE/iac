@@ -15,7 +15,6 @@ provider "azurerm" {
 
 // Create test messaging resource group
 resource "azurerm_resource_group" "messaging" {
-  name      = "rg-messaging-${var.environment_code}"
-  location  = var.location
-  tags      = var.tags
+  name      = "rg-messaging-dev"
+  location  = "westeurope"
 }
