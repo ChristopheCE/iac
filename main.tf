@@ -6,7 +6,7 @@ terraform {
       name = "GitHub-Actions"
     }
   }
-  
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -21,6 +21,6 @@ provider "azurerm" {
 
 // Create test messaging resource group
 resource "azurerm_resource_group" "messaging" {
-  name      = "rg-messaging-dev"
-  location  = "westeurope"
+  name     = "rg-messaging-dev"
+  location = "westeurope"
 }
