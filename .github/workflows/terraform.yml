@@ -91,7 +91,7 @@ jobs:
     - name: Parameters
       run: |
         echo ${{ job.terraform.environment }}
-        echo ${{ steps.plan.outputs.json_plan_path }}
+        echo ${{ steps.plan.outputs.stdout }}
         echo ${{ github.ref }}
 
     - name: Upload a Build Artifact
