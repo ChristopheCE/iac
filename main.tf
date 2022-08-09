@@ -19,8 +19,8 @@ provider "azurerm" {
   features {}
 }
 
-// Create test messaging resource group
-resource "azurerm_resource_group" "messaging" {
-  name     = "rg-messaging-dev"
+// Create test  resource group
+resource "azurerm_resource_group" "test" {
+  name     = "rg-test-dev"
   location = "westeurope"
 }
