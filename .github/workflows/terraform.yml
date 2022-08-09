@@ -86,7 +86,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -input=false -out plan.out
+      run: terraform plan -input=false
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
