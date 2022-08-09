@@ -1,6 +1,12 @@
 terraform {
-  backend "azurerm" {
+  cloud {
+    organization = "Christophe"
+
+    workspaces {
+      name = "GitHub-Actions"
+    }
   }
+  
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
