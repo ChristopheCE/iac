@@ -17,8 +17,7 @@ on:
         required: true
       TerraformBackendStorageKey:
         type: string
-        required: true
-      secrets: inherit
+        required: true      
 jobs:
   terraform_apply:
     runs-on: ubuntu-latest
