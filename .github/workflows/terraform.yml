@@ -97,6 +97,20 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
+    - name: Dump GitHub context
+      id: github_context_step
+      run: echo '${{ toJSON(github) }}'
+    - name: Dump job context
+      run: echo '${{ toJSON(job) }}'
+    - name: Dump steps context
+      run: echo '${{ toJSON(steps) }}'
+    - name: Dump runner context
+      run: echo '${{ toJSON(runner) }}'
+    - name: Dump strategy context
+      run: echo '${{ toJSON(strategy) }}'
+    - name: Dump matrix context
+      run: echo '${{ toJSON(matrix) }}'
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
@@ -106,6 +120,6 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         # Artifact name
-        name: ${{ jobs.terraform.environment }}${{ github.run_number }}
+        name: ${{ job.terraform.environment }}${{ github.run_number }}
         # A file, directory or wildcard pattern that describes what to upload
         path: terraform.tfplan
