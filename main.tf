@@ -15,6 +15,6 @@ provider "azurerm" {
 
 // Create test  resource group
 resource "azurerm_resource_group" "test" {
-  name     = "rg-test-dev"
+  name     = "rg-actions-${var.environment_code}"
   location = "westeurope"
 }

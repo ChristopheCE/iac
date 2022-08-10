@@ -18,6 +18,10 @@ on:
       TerraformBackendStorageKey:
         type: string
         required: true
+      code:
+        type: string
+        required: true
+        description: "Abbreviated environment name"
     outputs:
       plan:
         description: "Name of the terraform plan file"     
@@ -67,7 +71,9 @@ jobs:
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         id: plan
-        run: terraform plan -input=false -out ${{ steps.set-outputs.outputs.plan }}
+        run: terraform plan \
+          -input=false -out ${{ steps.set-outputs.outputs.plan }} \
+          -var="environment_code=${{ inputs.code }}" \
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
