@@ -19,51 +19,48 @@ runs:
   environment: ${{ env.environment }}
 
   steps:
-  # Checkout the repository to the GitHub Actions runner
-  - name: Checkout
-    uses: actions/checkout@v3
+    
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      # with:
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-  # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-  - name: Setup Terraform
-    uses: hashicorp/setup-terraform@v1
-    # with:
-      # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{ env.TerraformBackendResourceGroup }}" \
+        -backend-config="storage_account_name=${{ env.TerraformBackendStorageAccount }}" \
+        -backend-config="container_name=${{ env.TerraformBackendStorageContainer }}" \
+        -backend-config="key=${{ env.TerraformBackendStorageKey }}" \
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
 
-  # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-  - name: Terraform Init
-    run: |
-      terraform init \
-      -backend-config="resource_group_name=${{ env.TerraformBackendResourceGroup }}" \
-      -backend-config="storage_account_name=${{ env.TerraformBackendStorageAccount }}" \
-      -backend-config="container_name=${{ env.TerraformBackendStorageContainer }}" \
-      -backend-config="key=${{ env.TerraformBackendStorageKey }}" \
-  # Checks that all Terraform configuration files adhere to a canonical format
-  - name: Terraform Format
-    run: terraform fmt -check
+    - name: Dump GitHub context
+      id: github_context_step
+      run: echo '${{ toJSON(github) }}'
+    - name: Dump job context
+      run: echo '${{ toJSON(job) }}'
+    - name: Dump steps context
+      run: echo '${{ toJSON(steps) }}'
+    - name: Dump runner context
+      run: echo '${{ toJSON(runner) }}'
+    - name: Dump strategy context
+      run: echo '${{ toJSON(strategy) }}'
+    - name: Dump matrix context
+      run: echo '${{ toJSON(matrix) }}'
 
-  - name: Dump GitHub context
-    id: github_context_step
-    run: echo '${{ toJSON(github) }}'
-  - name: Dump job context
-    run: echo '${{ toJSON(job) }}'
-  - name: Dump steps context
-    run: echo '${{ toJSON(steps) }}'
-  - name: Dump runner context
-    run: echo '${{ toJSON(runner) }}'
-  - name: Dump strategy context
-    run: echo '${{ toJSON(strategy) }}'
-  - name: Dump matrix context
-    run: echo '${{ toJSON(matrix) }}'
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -input=false -out terraform.tfplan
 
-  # Generates an execution plan for Terraform
-  - name: Terraform Plan
-    id: plan
-    run: terraform plan -input=false -out terraform.tfplan
-
-  - name: Upload a Build Artifact
-    uses: actions/upload-artifact@v3.1.0
-    with:
-      # Artifact name
-      name: ${{ env.environment }}_${{ github.run_number }}
-      # A file, directory or wildcard pattern that describes what to upload
-      path: terraform.tfplan
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        # Artifact name
+        name: ${{ env.environment }}_${{ github.run_number }}
+        # A file, directory or wildcard pattern that describes what to upload
+        path: terraform.tfplan
