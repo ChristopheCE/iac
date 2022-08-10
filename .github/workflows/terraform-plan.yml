@@ -27,7 +27,6 @@ on:
         value: ${{ jobs.terraform_plan.outputs.artifact }}
 jobs:  
   terraform_plan:
-    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     outputs:
       plan: ${{ steps.plan-name.outputs.plan }}
