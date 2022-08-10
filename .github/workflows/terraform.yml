@@ -10,3 +10,4 @@ jobs:
     uses: ./.github/workflows/terraform-plan.yml            
     with:
         environment: ${{ env.environment }}
+    secrets: inherit
