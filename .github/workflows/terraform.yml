@@ -48,7 +48,7 @@ jobs:
         TerraformBackendResourceGroup: "rg-terraform"
         TerraformBackendStorageContainer: "state"
         TerraformBackendStorageKey: "acceptance.tfstate"
-        code: "dev"
+        code: "acc"
         plan: ${{ needs.acceptance_plan.outputs.plan }}
         artifact: ${{ needs.acceptance_plan.outputs.artifact }}        
     secrets: inherit
@@ -71,7 +71,7 @@ jobs:
         TerraformBackendResourceGroup: "rg-terraform"
         TerraformBackendStorageContainer: "state"
         TerraformBackendStorageKey: "production.tfstate"
-        code: "dev"
+        code: "prd"
         plan: ${{ needs.production_plan.outputs.plan }}
         artifact: ${{ needs.production_plan.outputs.artifact }}        
     secrets: inherit
