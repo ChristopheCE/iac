@@ -11,6 +11,6 @@ jobs:
     name: "Development: plan"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/terraform-plan
+      - uses: ./actions/terraform-plan
         with:
           environment: "development"
