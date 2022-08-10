@@ -5,9 +5,9 @@ on:
     branches:
     - "main"
 
-jobs:
+jobs:  
   development_plan:
-    uses: ./.github/workflows/terraform-plan.yml            
+    uses: ./.github/workflows/terraform-plan.yml                
     with:
-        environment: ${{ env.environment }}
+        environment: "development"
     secrets: inherit

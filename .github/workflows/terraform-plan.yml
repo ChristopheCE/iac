@@ -18,8 +18,9 @@ on:
       TerraformBackendStorageKey:
         type: string
         required: true      
-jobs:
+jobs:  
   terraform_apply:
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       
