@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     name: "Development: plan"
     steps:
-      - uses: ./.github/actions/terraform-plan
+      - uses: .github/actions/terraform-plan
         with:
           environment: "development"
