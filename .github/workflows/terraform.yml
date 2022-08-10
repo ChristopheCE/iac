@@ -31,6 +31,7 @@ jobs:
     secrets: inherit
   acceptance_plan:
     uses: ./.github/workflows/terraform-plan.yml                
+    needs: development_apply
     with:
         environment: "acceptance"
         TerraformBackendStorageAccount: "strterraformweu"
@@ -54,6 +55,7 @@ jobs:
     secrets: inherit
   production_plan:
     uses: ./.github/workflows/terraform-plan.yml                
+    needs: acceptance_apply
     with:
         environment: "production"
         TerraformBackendStorageAccount: "strterraformweu"
