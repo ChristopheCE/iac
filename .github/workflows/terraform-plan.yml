@@ -61,7 +61,7 @@ jobs:
         run: terraform plan -input=false -out terraform.tfplan
 
       - name: Set artifact name
-        run: echo "::set-output name=plan::${{ inputs.environment }}_${{ github.run_number }}""
+        run: echo "::set-output name=plan::${{ inputs.environment }}_${{ github.run_number }}"
         id: plan-name
 
       - name: Upload a Build Artifact
