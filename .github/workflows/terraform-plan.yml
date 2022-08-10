@@ -71,11 +71,11 @@ jobs:
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         id: plan
-        run: terraform plan \
+        run: |
+          terraform plan \
           -input=false \
           -var="environment_code=${{ inputs.code }}" \
-          -out ${{ steps.set-outputs.outputs.plan }} \
-          
+          -out ${{ steps.set-outputs.outputs.plan }} \          
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
