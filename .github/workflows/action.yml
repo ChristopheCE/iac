@@ -1,0 +1,56 @@
+name: "terraform-plan"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      TerraformBackendResourceGroup:
+        type: string
+        required: true
+      TerraformBackendStorageAccount:
+        type: string
+        required: true
+      TerraformBackendStorageContainer:
+        type: string
+        required: true
+      TerraformBackendStorageKey:
+        type: string
+        required: true
+      secrets: inherit
+jobs:
+  terraform_apply:
+    runs-on: ubuntu-latest
+    steps:
+      
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        # with:
+          # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: |
+          terraform init \
+          -backend-config="resource_group_name=${{ inputs.TerraformBackendResourceGroup }}" \
+          -backend-config="storage_account_name=${{ inputs.TerraformBackendStorageAccount }}" \
+          -backend-config="container_name=${{ inputs.TerraformBackendStorageContainer }}" \
+          -backend-config="key=${{ inputs.TerraformBackendStorageKey }}" \
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -input=false -out terraform.tfplan
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          # Artifact name
+          name: ${{ inputs.environment }}_${{ github.run_number }}
+          # A file, directory or wildcard pattern that describes what to upload
+          path: terraform.tfplan

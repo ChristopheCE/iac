@@ -9,8 +9,11 @@ jobs:
   development_plan:
     runs-on: ubuntu-latest
     name: "Development: plan"
+    env:
+      environment: "development"
+    environment: ${{ env.environment }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/terraform-plan
         with:
-          environment: "development"
+          environment: ${{ env.environment }}
