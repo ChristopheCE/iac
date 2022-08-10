@@ -64,6 +64,16 @@ jobs:
       run:
         shell: bash
 
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      TerraformBackendStorageAccount: "strterraformweu"
+      TerraformBackendResourceGroup: "rg-terraform"
+      TerraformBackendStorageContainer: "state"
+      TerraformBackendStorageKey: "terraform.tfstate"
+
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -72,13 +82,17 @@ jobs:
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      # with:
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
-
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{ env.TerraformBackendResourceGroup }}" \
+        -backend-config="storage_account_name=${{ env.TerraformBackendStorageAccount }}" \
+        -backend-config="container_name=${{ env.TerraformBackendStorageContainer }}" \
+        -backend-config="key=${{ env.TerraformBackendStorageKey }}" \
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
@@ -86,7 +100,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -input=false
+      run: terraform plan -input=false -out terraform.tfplan
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
