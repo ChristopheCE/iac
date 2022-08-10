@@ -10,4 +10,8 @@ jobs:
     uses: ./.github/workflows/terraform-plan.yml                
     with:
         environment: "development"
+        TerraformBackendStorageAccount: "strterraformweu"
+        TerraformBackendResourceGroup: "rg-terraform"
+        TerraformBackendStorageContainer: "state"
+        TerraformBackendStorageKey: "terraform.tfstate"
     secrets: inherit
