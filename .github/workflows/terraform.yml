@@ -7,6 +7,6 @@ on:
 
 jobs:
   development_plan:
-    uses: ./.github/workflows/terraform-plan.yaml
+    uses: ./.github/workflows/terraform-plan.yml            
     with:
         environment: ${{ env.environment }}
