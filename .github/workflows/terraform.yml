@@ -17,10 +17,12 @@ jobs:
     secrets: inherit
   development_apply:
     uses: ./.github/workflows/terraform-apply.yml                
+    needs: development_plan
     with:
         environment: "development"
         TerraformBackendStorageAccount: "strterraformweu"
         TerraformBackendResourceGroup: "rg-terraform"
         TerraformBackendStorageContainer: "state"
         TerraformBackendStorageKey: "terraform.tfstate"
+        plan: ${{ needs.development_plan.outputs.plan }}
     secrets: inherit

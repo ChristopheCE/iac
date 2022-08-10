@@ -17,11 +17,17 @@ on:
         required: true
       TerraformBackendStorageKey:
         type: string
-        required: true      
+        required: true
+    outputs:
+      plan:
+        description: "Name of the terraform plan file"     
+        value: ${{ jobs.terraform_plan.outputs.plan }}
 jobs:  
-  terraform_apply:
+  terraform_plan:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
+    outputs:
+      plan: ${{ steps.plan-name.outputs.PLAN }}
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -54,10 +60,14 @@ jobs:
         id: plan
         run: terraform plan -input=false -out terraform.tfplan
 
+      - name: Set artifact name
+        run: echo "::set-output name=plan::${{ inputs.environment }}_${{ github.run_number }}""
+        id: plan-name
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           # Artifact name
-          name: ${{ inputs.environment }}_${{ github.run_number }}
+          name: ${{ steps.plan-name.outputs.plan }}
           # A file, directory or wildcard pattern that describes what to upload
           path: terraform.tfplan
