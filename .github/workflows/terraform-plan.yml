@@ -22,12 +22,16 @@ on:
       plan:
         description: "Name of the terraform plan file"     
         value: ${{ jobs.terraform_plan.outputs.plan }}
+      artifact:
+        description: "Name of the artifact containing the terraform plan file"     
+        value: ${{ jobs.terraform_plan.outputs.artifact }}
 jobs:  
   terraform_plan:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     outputs:
-      plan: ${{ steps.plan-name.outputs.PLAN }}
+      plan: ${{ steps.plan-name.outputs.plan }}
+      artifact: ${{ steps.plan-name.outputs.artifact }}
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -55,19 +59,21 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
+      - name: Set outputs
+        run: |
+          echo "::set-output name=plan::terraform.tfplan"
+          echo "::set-output name=artifact::${{ inputs.environment }}_${{ github.run_number }}"
+        id: set-outputs
+
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         id: plan
-        run: terraform plan -input=false -out terraform.tfplan
-
-      - name: Set artifact name
-        run: echo "::set-output name=plan::${{ inputs.environment }}_${{ github.run_number }}.tfplan"
-        id: plan-name
+        run: terraform plan -input=false -out ${{ steps.set-outputs.outputs.plan }}
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           # Artifact name
-          name: terraform.tfplan
+          name: ${{ steps.set-outputs.outputs.artifact }}
           # A file, directory or wildcard pattern that describes what to upload
-          path: ${{ steps.plan-name.outputs.plan }}
+          path: ${{ steps.set-outputs.outputs.plan }}

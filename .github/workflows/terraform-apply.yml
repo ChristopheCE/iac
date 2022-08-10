@@ -20,7 +20,10 @@ on:
         required: true      
       plan:
         type: string
-        required: true   
+        required: true
+      artifact:
+        type: string
+        required: true
 jobs:  
   terraform_apply:
     environment: ${{ inputs.environment }}
@@ -36,7 +39,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.plan }}
+          name: ${{ inputs.artifact }}
 
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform

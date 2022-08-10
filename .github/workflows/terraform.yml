@@ -25,4 +25,5 @@ jobs:
         TerraformBackendStorageContainer: "state"
         TerraformBackendStorageKey: "terraform.tfstate"
         plan: ${{ needs.development_plan.outputs.plan }}
+        artifact: ${{ needs.development_plan.outputs.artifact }}
     secrets: inherit
