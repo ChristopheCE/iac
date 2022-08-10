@@ -14,6 +14,6 @@ jobs:
     environment: "development"
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/actions/terraform-plan
+      - uses: ./.github/workflows/terraform-plan.yml@main
         with:
           environment: ${{ env.environment }}
