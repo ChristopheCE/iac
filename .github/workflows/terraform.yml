@@ -15,3 +15,12 @@ jobs:
         TerraformBackendStorageContainer: "state"
         TerraformBackendStorageKey: "terraform.tfstate"
     secrets: inherit
+  development_apply:
+    uses: ./.github/workflows/terraform-apply.yml                
+    with:
+        environment: "development"
+        TerraformBackendStorageAccount: "strterraformweu"
+        TerraformBackendResourceGroup: "rg-terraform"
+        TerraformBackendStorageContainer: "state"
+        TerraformBackendStorageKey: "terraform.tfstate"
+    secrets: inherit
