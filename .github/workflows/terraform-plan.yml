@@ -74,7 +74,7 @@ jobs:
         run: |
           terraform plan \
           -input=false \
-          -var="environment_code=${{ inputs.code }}" \
+          -var='environment_code=${{ inputs.code }}' \
           -out=${{ steps.set-outputs.outputs.plan }} \          
 
       - name: Upload a Build Artifact
