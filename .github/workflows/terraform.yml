@@ -7,13 +7,6 @@ on:
 
 jobs:
   development_plan:
-    runs-on: ubuntu-latest
-    name: "Development: plan"
-    env:
-      environment: "development"
-    environment: "development"
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/terraform-plan.yaml
-        with:
-          environment: ${{ env.environment }}
+    uses: ./.github/workflows/terraform-plan.yaml
+    with:
+        environment: ${{ env.environment }}
