@@ -33,3 +33,11 @@ resource "azurerm_storage_container" "test" {
   name = "data"
   storage_account_name = azurerm_storage_account.test.name  
 }
+
+// Create container registry
+resource "azurerm_container_registry" "test" {
+  name = "cr-actions-${var.envronment_code}"
+  resource_group_name = azurerm_resource_group.test.name
+  location = azurerm_resource_group.test.location
+  sku = "Standard"
+}
