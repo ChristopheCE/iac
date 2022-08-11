@@ -27,3 +27,9 @@ resource "azurerm_storage_account" "test" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
+
+// Create storage container
+resource "azurerm_storage_container" "test" {
+  name = "data"
+  storage_account_name = azurerm_storage_account.test.name  
+}
