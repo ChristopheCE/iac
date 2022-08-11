@@ -18,3 +18,13 @@ resource "azurerm_resource_group" "test" {
   name     = "rg-actions-${var.environment_code}"
   location = "westeurope"
 }
+
+// Create storage account
+resource "azurerm_storage_account" "test" {
+  name                            = "sttest${var.environment_code}"
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  tags                            = var.tags
+}
