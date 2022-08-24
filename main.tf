@@ -13,35 +13,6 @@ provider "azurerm" {
   features {}
 }
 
-// Create test  resource group
-resource "azurerm_resource_group" "test" {
-  name     = "rg-actions-${var.environment_code}"
-  location = "westeurope"
-}
-
-// Create storage account
-resource "azurerm_storage_account" "test" {
-  name                     = "sttest${var.environment_code}"
-  resource_group_name      = azurerm_resource_group.test.name
-  location                 = azurerm_resource_group.test.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-// Create storage container
-resource "azurerm_storage_container" "test" {
-  name                 = "data"
-  storage_account_name = azurerm_storage_account.test.name
-}
-
-// Create container registry
-resource "azurerm_container_registry" "test" {
-  name                = "cr-actions-${var.environment_code}"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
-  sku                 = "Standard"
-}
-
 // Create sonar  resource group
 resource "azurerm_resource_group" "sonar" {
   name     = "rg-sonar-${var.environment_code}"
