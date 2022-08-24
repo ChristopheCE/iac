@@ -50,7 +50,7 @@ resource "azurerm_resource_group" "sonar" {
 
 // Creat App Service Plan
 resource "azurerm_service_plan" "sonar" {
-  name = "plan-sonar-${var.environment_code}"
+  name                = "plan-sonar-${var.environment_code}"
   resource_group_name = azurerm_resource_group.sonar.name
   location            = azurerm_resource_group.sonar.location
   os_type             = "Linux"
@@ -65,8 +65,8 @@ resource "azurerm_linux_web_app" "sonar" {
 
   site_config {
     application_stack {
-      docker_image = "sonarqube"
-      tdocker_image_tag = "9.6-community"    
+      docker_image     = "sonarqube"
+      docker_image_tag = "9.6-community"
     }
   }
 }
