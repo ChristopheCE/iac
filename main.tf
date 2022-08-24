@@ -35,6 +35,7 @@ resource "azurerm_linux_web_app" "sonar" {
   service_plan_id     = azurerm_service_plan.sonar.id
 
   site_config {
+    always_on = false
     application_stack {
       docker_image     = "sonarqube"
       docker_image_tag = "9.6-community"
