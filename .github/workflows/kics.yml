@@ -29,10 +29,12 @@ jobs:
           platform_type: terraform
           output_formats: 'json,sarif'
       - name: Show results
+        if: always()
         run: |
           cat results-dir/results.sarif
           cat results-dir/results.json
       - name: Upload SARIF file
+        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results-dir/results.sarif
